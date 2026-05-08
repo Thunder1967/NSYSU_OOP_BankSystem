@@ -1,4 +1,4 @@
-package nsysu.mongodb;
+package nsysu.Util.exception;
 
 public class TargetNotFindException extends RuntimeException {
     public TargetNotFindException(String message) {

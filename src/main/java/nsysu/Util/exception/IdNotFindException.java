@@ -1,4 +1,4 @@
-package nsysu.mongodb;
+package nsysu.Util.exception;
 
 public class IdNotFindException extends RuntimeException {
   public IdNotFindException(String message) {
