@@ -1,4 +1,4 @@
-package nsysu.Util.enumtype;
+package nsysu.util.enumtype;
 
 public interface asTarget {
     String getStr();

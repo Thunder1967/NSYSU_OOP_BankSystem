@@ -1,9 +1,8 @@
-package nsysu.Util.enumtype;
+package nsysu.util.enumtype;
 
 public enum StatusType implements asTarget {
     Active("active"),
     Frozen("frozen"),
-    Inactive("inactive"),
     Closed("closed");
 
     private final String str;

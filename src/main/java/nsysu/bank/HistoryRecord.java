@@ -10,12 +10,6 @@ public class HistoryRecord implements Comparable<HistoryRecord>{
     private final String fromId;
     private final String description;
 
-    public HistoryRecord(Date date, int amount, String fromId, String description) {
-        this.date = date;
-        this.amount = amount;
-        this.fromId = fromId;
-        this.description = description;
-    }
     public HistoryRecord(Document doc) {
         this.date = doc.getDate("date");
         this.amount = doc.getInteger("amount");
@@ -46,6 +40,6 @@ public class HistoryRecord implements Comparable<HistoryRecord>{
 
     @Override
     public String toString() {
-        return String.format("[%s] %d NTD from (%s) - %s", date, amount, fromId, description);
+        return String.format("[%s] %d from (%s) - %s", date, amount,fromId, description);
     }
 }

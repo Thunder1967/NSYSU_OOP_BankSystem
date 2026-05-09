@@ -1,4 +1,4 @@
-package nsysu.Util.enumtype;
+package nsysu.util.enumtype;
 
 public enum AccountTarget implements asTarget {
     Balance("balance"),

@@ -1,13 +1,12 @@
-package nsysu.Util.sqlaccess;
+package nsysu.util.sqlaccess;
 
-import nsysu.Util.enumtype.AccountType;
-import nsysu.Util.enumtype.RoleType;
-import nsysu.Util.enumtype.StatusType;
-import nsysu.Util.enumtype.UserTarget;
-import nsysu.Util.exception.IdNotFindException;
-import nsysu.Util.mongodb.MongoDBUtil;
+import nsysu.util.enumtype.AccountType;
+import nsysu.util.enumtype.RoleType;
+import nsysu.util.enumtype.StatusType;
+import nsysu.util.enumtype.UserTarget;
+import nsysu.util.exception.IdNotFindException;
+import nsysu.util.mongodb.MongoDBUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public final class UserData {

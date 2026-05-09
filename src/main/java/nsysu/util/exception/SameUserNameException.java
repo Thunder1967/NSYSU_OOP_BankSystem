@@ -1,4 +1,4 @@
-package nsysu.Util.exception;
+package nsysu.util.exception;
 
 public class SameUserNameException extends RuntimeException {
     public SameUserNameException(String message) {

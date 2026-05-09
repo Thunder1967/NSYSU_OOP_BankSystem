@@ -1,4 +1,4 @@
-package nsysu.Util.mongodb;
+package nsysu.util.mongodb;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -7,10 +7,10 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import nsysu.Util.enumtype.*;
-import nsysu.Util.exception.IdNotFindException;
-import nsysu.Util.exception.SameUserNameException;
-import nsysu.Util.exception.TargetNotFindException;
+import nsysu.util.enumtype.*;
+import nsysu.util.exception.IdNotFindException;
+import nsysu.util.exception.SameUserNameException;
+import nsysu.util.exception.TargetNotFindException;
 import nsysu.resources.ApplicationProperties;
 import org.bson.Document;
 
@@ -82,7 +82,7 @@ public final class MongoDBUtil {
     private static String genUniqueId(MongoCollection<Document> collection,String name){
         String newId;
         do {
-            newId = name + (random.nextInt(9000) + 1000);
+            newId = name + (random.nextInt(90000) + 10000);
         } while (collection.countDocuments(Filters.eq("id", newId)) > 0);
         return newId;
     }

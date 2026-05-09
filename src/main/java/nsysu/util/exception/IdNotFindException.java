@@ -1,4 +1,4 @@
-package nsysu.Util.exception;
+package nsysu.util.exception;
 
 public class IdNotFindException extends RuntimeException {
   public IdNotFindException(String message) {

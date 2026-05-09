@@ -1,4 +1,4 @@
-package nsysu.Util.exception;
+package nsysu.util.exception;
 
 public class TargetNotFindException extends RuntimeException {
     public TargetNotFindException(String message) {

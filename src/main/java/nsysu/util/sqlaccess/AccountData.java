@@ -1,12 +1,10 @@
-package nsysu.Util.sqlaccess;
+package nsysu.util.sqlaccess;
 
-import nsysu.Util.enumtype.AccountTarget;
-import nsysu.Util.enumtype.AccountType;
-import nsysu.Util.enumtype.StatusType;
-import nsysu.Util.enumtype.UserTarget;
-import nsysu.Util.exception.IdNotFindException;
-import nsysu.Util.exception.NegativeBalanceException;
-import nsysu.Util.mongodb.MongoDBUtil;
+import nsysu.util.enumtype.AccountTarget;
+import nsysu.util.enumtype.StatusType;
+import nsysu.util.exception.IdNotFindException;
+import nsysu.util.exception.NegativeBalanceException;
+import nsysu.util.mongodb.MongoDBUtil;
 import nsysu.bank.HistoryRecord;
 import org.bson.Document;
 
@@ -20,8 +18,8 @@ public final class AccountData {
     public static String getType(String id) throws IdNotFindException{
         return MongoDBUtil.getData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.Type, String.class);
     }
-    public static Double getBalance(String id) throws IdNotFindException{
-        return MongoDBUtil.getData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.Balance, Double.class);
+    public static double getBalance(String id) throws IdNotFindException{
+        return MongoDBUtil.getData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.Balance, double.class);
     }
     public static Date getLastView(String id) throws IdNotFindException{
         return MongoDBUtil.getData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.TimeOfLastView, Date.class);
@@ -39,7 +37,7 @@ public final class AccountData {
         return MongoDBUtil.getData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.Status, String.class);
     }
 
-    public static void incBalance(String id,Double value) throws IdNotFindException,NegativeBalanceException{
+    public static void incBalance(String id,double value) throws IdNotFindException,NegativeBalanceException{
         if(AccountData.getBalance(id)+value<0){
             throw new NegativeBalanceException();
         }
