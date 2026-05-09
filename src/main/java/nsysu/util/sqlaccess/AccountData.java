@@ -19,7 +19,7 @@ public final class AccountData {
         return MongoDBUtil.getData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.Type, String.class);
     }
     public static double getBalance(String id) throws IdNotFindException{
-        return MongoDBUtil.getData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.Balance, double.class);
+        return MongoDBUtil.getData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.Balance, Double.class);
     }
     public static Date getLastView(String id) throws IdNotFindException{
         return MongoDBUtil.getData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.TimeOfLastView, Date.class);
@@ -28,7 +28,7 @@ public final class AccountData {
         List<Document> history = MongoDBUtil.getData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.History, List.class);
         List<HistoryRecord> record = new ArrayList<>();
         for(Document doc:history){
-            record.add(new HistoryRecord(doc));
+            record.add(new HistoryRecord(doc,id));
         }
         Collections.sort(record);
         return record;
@@ -46,10 +46,13 @@ public final class AccountData {
     public static void setLastView(String id) throws IdNotFindException{
         MongoDBUtil.setData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.TimeOfLastView, new Date());
     }
-    public static void addOneHistory(String toId, int amount, String fromId, String description) throws IdNotFindException{
-        MongoDBUtil.addNewHistory(toId,amount,fromId,description);
+    public static void addOneHistory(String id, double amount, String anotherId, String description) throws IdNotFindException{
+        MongoDBUtil.addNewHistory(id,amount,anotherId,description);
     }
     public static void setStatus(String id, StatusType type) throws IdNotFindException{
         MongoDBUtil.setData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.Status, type.getStr());
+    }
+    public static boolean transferable(String id){
+        return AccountData.getStatus(id).equals(StatusType.Active.getStr());
     }
 }

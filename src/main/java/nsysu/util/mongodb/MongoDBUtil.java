@@ -52,7 +52,7 @@ public final class MongoDBUtil {
             throw new TargetNotFindException();
         }
         else{
-            return doc.get(target, CC);
+            return doc.get(target.getStr(), CC);
         }
     }
 
@@ -96,7 +96,7 @@ public final class MongoDBUtil {
                 .append(UserTarget.UserName.getStr(), username)
                 .append(UserTarget.Password.getStr(), password)
                 .append(UserTarget.Role.getStr(), role.getStr())
-                .append(UserTarget.Status.getStr(), StatusType.Active)
+                .append(UserTarget.Status.getStr(), StatusType.Active.getStr())
                 .append(UserTarget.Accounts.getStr(), new ArrayList<String>());
         usersCollection.insertOne(newUser);
         return newId;
@@ -113,18 +113,18 @@ public final class MongoDBUtil {
                 .append(AccountTarget.Balance.getStr(), 0D)
                 .append(AccountTarget.TimeOfLastView.getStr(), new Date())
                 .append(AccountTarget.Type.getStr(), type.getStr())
-                .append(UserTarget.Status.getStr(), StatusType.Active)
+                .append(UserTarget.Status.getStr(), StatusType.Active.getStr())
                 .append(AccountTarget.History.getStr(), new ArrayList<Document>());
         accountsCollection.insertOne(newAccount);
         addToList(CollectionType.USERS, userId, UserTarget.Accounts, newId);
         return newId;
     }
 
-    public static void addNewHistory(String toId,int amount, String fromId,String description) {
+    public static void addNewHistory(String accountId,double amount, String anotherId,String description) {
         Document newHistory = new Document("date", new Date())
                 .append("amount", amount)
-                .append("fromId", fromId)
+                .append("anotherId", anotherId)
                 .append("description", description);
-        MongoDBUtil.addToList(CollectionType.ACCOUNTS, toId, AccountTarget.History, newHistory);
+        MongoDBUtil.addToList(CollectionType.ACCOUNTS, accountId, AccountTarget.History, newHistory);
     }
 }

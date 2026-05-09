@@ -1,7 +1,10 @@
 package nsysu.bank.role;
 
+import nsysu.util.enumtype.RoleType;
+import nsysu.util.exception.IdNotFindException;
+
 public class Administrator extends Person{
-    protected Administrator(String accountId, String name, String password, String role, String status) {
-        super(accountId, name, password, role, status);
+    public Administrator(String userId) throws IdNotFindException {
+        super(userId, RoleType.Administrator.getStr());
     }
 }
