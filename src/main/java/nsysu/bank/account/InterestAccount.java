@@ -3,7 +3,11 @@ package nsysu.bank.account;
 import nsysu.util.sqlaccess.AccountData;
 
 import java.util.Date;
-
+/**
+ * @startuml
+ * class InterestAccount
+ * @enduml
+ */
 public abstract class InterestAccount extends BasicAccount {
     protected Date date;
     protected double rate;
