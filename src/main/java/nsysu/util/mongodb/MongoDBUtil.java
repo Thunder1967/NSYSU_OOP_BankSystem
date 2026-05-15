@@ -127,4 +127,14 @@ public final class MongoDBUtil {
                 .append("description", description);
         MongoDBUtil.addToList(CollectionType.ACCOUNTS, accountId, AccountTarget.History, newHistory);
     }
+
+    public static String getIdByName(String name) throws  TargetNotFindException{
+        Document doc = usersCollection.find(Filters.eq(UserTarget.UserName.getStr(), name)).first();
+        if (doc == null) {
+            throw new TargetNotFindException();
+        }
+        else{
+            return doc.getString("id");
+        }
+    }
 }

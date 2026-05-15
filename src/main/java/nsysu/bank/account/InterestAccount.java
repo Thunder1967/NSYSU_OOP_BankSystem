@@ -22,7 +22,10 @@ public abstract class InterestAccount extends BasicAccount {
         return rate;
     }
 
-    protected abstract void updateBalanceWithInterest();
+    protected void updateBalanceWithInterest(){
+        AccountData.setLastView(this.getId());
+        this.date = AccountData.getLastView(this.getId());
+    }
 
     @Override
     public void refresh() {

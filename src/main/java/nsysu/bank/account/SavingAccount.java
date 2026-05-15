@@ -20,8 +20,9 @@ public class SavingAccount extends InterestAccount implements CanTransferOut,Can
 
     @Override
     protected final void updateBalanceWithInterest(){
-        Duration duration = Duration.between(new Date().toInstant(),this.date.toInstant());
+        Duration duration = Duration.between(this.date.toInstant(),new Date().toInstant()).abs();
         this.updateBalance(this.balance*this.rate*(duration.toMinutes()));
+        super.updateBalanceWithInterest();
     }
 
     @Override
@@ -31,7 +32,7 @@ public class SavingAccount extends InterestAccount implements CanTransferOut,Can
 
     @Override
     public boolean withdraw(double amount) {
-        if(AccountData.transferable(this.getId())){
+        if(transferable(this.getId())){
             handleWithdraw(this.getId(),amount);
             return true;
         }

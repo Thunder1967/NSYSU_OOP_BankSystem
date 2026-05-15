@@ -52,7 +52,4 @@ public final class AccountData {
     public static void setStatus(String id, StatusType type) throws IdNotFindException{
         MongoDBUtil.setData(MongoDBUtil.CollectionType.ACCOUNTS,id, AccountTarget.Status, type.getStr());
     }
-    public static boolean transferable(String id){
-        return AccountData.getStatus(id).equals(StatusType.Active.getStr());
-    }
 }
