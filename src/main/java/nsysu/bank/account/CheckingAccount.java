@@ -4,7 +4,7 @@ import nsysu.util.enumtype.AccountType;
 import nsysu.util.exception.NegativeBalanceException;
 import nsysu.util.sqlaccess.AccountData;
 
-public class CheckingAccount extends BasicAccount implements CanWithdraw,CanTransferOut{
+public class CheckingAccount extends BasicAccount implements Transactable,CanTransferOut{
     protected CheckingAccount(String accountId) {
         super(accountId, AccountType.CheckingAccount.getStr());
     }
@@ -39,5 +39,10 @@ public class CheckingAccount extends BasicAccount implements CanWithdraw,CanTran
 
     private boolean isValidAmount(double amount) {
         return amount > 0;
+    }
+
+    @Override
+    public boolean deposit(double amount) {
+        return false;
     }
 }

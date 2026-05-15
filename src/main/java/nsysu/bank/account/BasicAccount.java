@@ -48,6 +48,10 @@ public abstract class BasicAccount {
         return balance;
     }
 
+    public double getBalanceInNTD() {
+        return balance;
+    }
+
     public String getType() {
         return type;
     }
@@ -73,12 +77,17 @@ public abstract class BasicAccount {
         return AccountData.getStatus(id).equals(StatusType.Active.getStr());
     }
     public boolean transfer(String toId,double amount,String description) throws IdNotFindException,NegativeBalanceException{
-        if(!transferable(toId) || !transferable(accountId)) return false;
+        if(!transferable(accountId) || AccountData.getStatus(toId).equals(StatusType.Closed.getStr())) return false;
         updateBalance(-amount);
         AccountData.incBalance(toId,amount);
         AccountData.addOneHistory(accountId,-amount,toId,description);
         AccountData.addOneHistory(toId,amount,accountId,description);
         return true;
+    }
+
+    public void closeAccount(){
+        AccountData.setStatus(this.accountId,StatusType.Closed);
+        refresh();
     }
 
     @Override

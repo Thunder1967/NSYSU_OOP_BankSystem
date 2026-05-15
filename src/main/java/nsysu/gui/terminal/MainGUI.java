@@ -140,9 +140,12 @@ public class MainGUI {
             }
             else if(person instanceof User user){
                 System.out.println("1. add new account");
-                System.out.println("2. deactivate user");
-                System.out.println("3. give user money");
-                System.out.println("4. unfreeze account");
+                System.out.println("2. query account");
+                System.out.println("3. query total balance");
+                System.out.println("4. transfer to your account");
+                System.out.println("5. transfer to other's account");
+                System.out.println("6. withdraw/deposit");
+                System.out.println("7. close account");
                 action = scanner.nextInt();
                 if (action==0){
                     System.out.println("Exit");

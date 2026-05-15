@@ -2,12 +2,11 @@ package nsysu.bank.account;
 
 import nsysu.util.enumtype.AccountType;
 import nsysu.util.exception.IdNotFindException;
-import nsysu.util.sqlaccess.AccountData;
 
 import java.time.Duration;
 import java.util.Date;
 
-public class SavingAccount extends InterestAccount implements CanTransferOut,CanWithdraw{
+public class SavingAccount extends InterestAccount implements CanTransferOut, Transactable, TransactableTool {
 
     public SavingAccount(String accountId, double rate) {
         super(accountId, AccountType.SavingsAccount.getStr(), rate);
@@ -26,14 +25,26 @@ public class SavingAccount extends InterestAccount implements CanTransferOut,Can
     }
 
     @Override
-    public boolean transferOut(String toId, double amount, String description) {
-        return transfer(toId,amount,description);
+    public boolean transferOut(String toId, double amount, String description) throws IdNotFindException,NegativeArraySizeException {
+        if(amount>0){
+            return transfer(toId,amount,description);
+        }
+        return false;
     }
 
     @Override
-    public boolean withdraw(double amount) {
-        if(transferable(this.getId())){
+    public boolean withdraw(double amount) throws NegativeArraySizeException{
+        if(amount>0 && transferable(this.getId())){
             handleWithdraw(this.getId(),amount);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deposit(double amount) {
+        if(amount>0 && transferable(this.getId())){
+            handleDeposit(this.getId(),amount);
             return true;
         }
         return false;
