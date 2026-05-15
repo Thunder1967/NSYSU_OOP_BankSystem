@@ -1,17 +1,19 @@
 package nsysu.bank.role;
 
+import nsysu.bank.HistoryRecord;
 import nsysu.bank.account.BasicAccount;
-import nsysu.bank.account.CanTransferOut;
+import nsysu.bank.account.ExternalTransferable;
 import nsysu.bank.account.Transactable;
 import nsysu.util.enumtype.AccountType;
 import nsysu.util.enumtype.RoleType;
+import nsysu.util.enumtype.StatusType;
 import nsysu.util.exception.IdNotFindException;
 import nsysu.util.exception.NegativeBalanceException;
+import nsysu.util.sqlaccess.AccountData;
 import nsysu.util.sqlaccess.UserData;
 
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.stream.Stream;
+import java.util.List;
 
 public class User extends Person{
     public User(String userId) throws IdNotFindException {
@@ -47,12 +49,20 @@ public class User extends Person{
 
     public boolean externalTransfer(int from,String toId,double amount,String description)
             throws IdNotFindException,NegativeBalanceException,IndexOutOfBoundsException{
-        if(this.account.get(from) instanceof CanTransferOut fromAccount){
+        if(this.account.get(from) instanceof ExternalTransferable fromAccount){
             if(amount<=0 || this.account.stream().anyMatch(i->i.getId().equals(toId))){
                 return false;
             }
             else{
-                return fromAccount.transferOut(toId,amount,description);
+                if(fromAccount.externalTransfer(toId,amount,description)){
+                    if(amount>30000){
+                        AccountData.setStatus(toId, StatusType.Frozen);
+                    }
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
         }
         return false;
@@ -79,5 +89,9 @@ public class User extends Person{
     public void closeAccount(int from)
             throws IndexOutOfBoundsException{
         this.account.get(from).closeAccount();
+    }
+    public List<HistoryRecord> getAccountHistory(int from)
+            throws IndexOutOfBoundsException{
+        return this.account.get(from).getHistory();
     }
 }

@@ -6,7 +6,7 @@ import nsysu.util.exception.IdNotFindException;
 import java.time.Duration;
 import java.util.Date;
 
-public class SavingAccount extends InterestAccount implements CanTransferOut, Transactable, TransactableTool {
+public class SavingAccount extends InterestAccount implements ExternalTransferable, Transactable, TransactableTool {
 
     public SavingAccount(String accountId, double rate) {
         super(accountId, AccountType.SavingsAccount.getStr(), rate);
@@ -25,7 +25,7 @@ public class SavingAccount extends InterestAccount implements CanTransferOut, Tr
     }
 
     @Override
-    public boolean transferOut(String toId, double amount, String description) throws IdNotFindException,NegativeArraySizeException {
+    public boolean externalTransfer(String toId, double amount, String description) throws IdNotFindException,NegativeArraySizeException {
         if(amount>0){
             return transfer(toId,amount,description);
         }

@@ -4,13 +4,13 @@ import nsysu.util.enumtype.AccountType;
 import nsysu.util.exception.NegativeBalanceException;
 import nsysu.util.sqlaccess.AccountData;
 
-public class CheckingAccount extends BasicAccount implements Transactable,CanTransferOut{
+public class CheckingAccount extends BasicAccount implements Transactable, ExternalTransferable {
     protected CheckingAccount(String accountId) {
         super(accountId, AccountType.CheckingAccount.getStr());
     }
 
     @Override
-    public boolean transferOut(String toId, double amount, String description) {
+    public boolean externalTransfer(String toId, double amount, String description) {
         if(!isValidAmount(amount)){
             return false;
         }
