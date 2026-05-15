@@ -1,9 +1,11 @@
 package nsysu.bank.role;
 
 import nsysu.bank.account.BasicAccount;
+import nsysu.util.enumtype.RoleType;
 import nsysu.util.enumtype.StatusType;
 import nsysu.util.exception.ClosedUserException;
 import nsysu.util.exception.IdNotFindException;
+import nsysu.util.exception.TargetNotFindException;
 import nsysu.util.sqlaccess.UserData;
 
 import java.util.ArrayList;
@@ -22,6 +24,21 @@ public abstract class Person {
         this.name = UserData.getUserName(userId);
         this.role = role;
         refresh();
+    }
+
+    static public Person logIn(String name,String password) throws TargetNotFindException {
+        final String Id = UserData.getIdByName(name);
+        if(UserData.getPassword(Id).equals(password)){
+            if(UserData.getRole(Id).equals(RoleType.Administrator.getStr())){
+                return new Administrator(Id);
+            }
+            else{
+                return new User(Id);
+            }
+        }
+        else{
+            throw new TargetNotFindException();
+        }
     }
 
     public String getId() {

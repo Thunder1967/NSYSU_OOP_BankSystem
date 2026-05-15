@@ -24,7 +24,7 @@ public class CheckingAccount extends BasicAccount implements CanWithdraw,CanTran
 
     @Override
     public boolean withdraw(double amount) {
-        if(!isValidAmount(amount) || !AccountData.transferable(this.getId())){
+        if(!isValidAmount(amount) || !transferable(this.getId())){
             return false;
         }
         try{

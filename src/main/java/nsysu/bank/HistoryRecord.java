@@ -6,14 +6,14 @@ import java.util.Date;
 
 public class HistoryRecord implements Comparable<HistoryRecord>{
     private final Date date;
-    private final int amount;
+    private final double amount;
     private final String accountId;
     private final String anotherId;
     private final String description;
 
     public HistoryRecord(Document doc,String accountId) {
         this.date = doc.getDate("date");
-        this.amount = doc.getInteger("amount");
+        this.amount = doc.getDouble("amount");
         this.anotherId = doc.getString("anotherId");
         this.description = doc.getString("description");
         this.accountId = accountId;
@@ -23,7 +23,7 @@ public class HistoryRecord implements Comparable<HistoryRecord>{
         return date;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 

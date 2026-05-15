@@ -5,6 +5,8 @@ import nsysu.util.enumtype.RoleType;
 import nsysu.util.enumtype.StatusType;
 import nsysu.util.enumtype.UserTarget;
 import nsysu.util.exception.IdNotFindException;
+import nsysu.util.exception.SameUserNameException;
+import nsysu.util.exception.TargetNotFindException;
 import nsysu.util.mongodb.MongoDBUtil;
 
 import java.util.List;
@@ -50,7 +52,15 @@ public final class UserData {
         MongoDBUtil.deleteData(MongoDBUtil.CollectionType.USERS,id);
     }
 
-    public static String addNewUser(String userName, String password, RoleType type){
+    public static String addNewUser(String userName, String password, RoleType type) throws SameUserNameException {
         return MongoDBUtil.addNewUser(userName,password,type);
+    }
+
+    public static String getIdByName(String name) throws TargetNotFindException {
+        return MongoDBUtil.getIdByName(name);
+    }
+
+    public static void setStatue(String id,StatusType type) throws IdNotFindException{
+        MongoDBUtil.setData(MongoDBUtil.CollectionType.USERS,id, UserTarget.Status, type.getStr());
     }
 }

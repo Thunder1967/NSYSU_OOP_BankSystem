@@ -2,6 +2,7 @@ package nsysu.bank.account;
 
 import nsysu.bank.HistoryRecord;
 import nsysu.util.enumtype.AccountType;
+import nsysu.util.enumtype.StatusType;
 import nsysu.util.exception.IdNotFindException;
 import nsysu.util.exception.NegativeBalanceException;
 import nsysu.util.sqlaccess.AccountData;
@@ -68,8 +69,11 @@ public abstract class BasicAccount {
         this.history = AccountData.getHistory(this.getId());
         this.status = AccountData.getStatus(this.getId());
     }
+    protected boolean transferable(String id) throws IdNotFindException{
+        return AccountData.getStatus(id).equals(StatusType.Active.getStr());
+    }
     public boolean transfer(String toId,double amount,String description) throws IdNotFindException,NegativeBalanceException{
-        if(!AccountData.transferable(toId) || !AccountData.transferable(accountId)) return false;
+        if(!transferable(toId) || !transferable(accountId)) return false;
         updateBalance(-amount);
         AccountData.incBalance(toId,amount);
         AccountData.addOneHistory(accountId,-amount,toId,description);

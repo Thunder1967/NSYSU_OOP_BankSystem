@@ -26,7 +26,7 @@ public class ForeignAccount extends InterestAccount implements CanWithdraw{
 
     @Override
     public boolean withdraw(double amount) {
-        if(!isValidAmount(amount) || !AccountData.transferable(this.getId())){
+        if(!isValidAmount(amount) || !transferable(this.getId())){
             return false;
         }
         try{

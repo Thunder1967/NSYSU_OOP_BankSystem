@@ -18,4 +18,8 @@ public class User extends Person{
         refresh();
         return tmp;
     }
+
+    public ArrayList<BasicAccount> getAccount(){
+        return this.account;
+    }
 }
