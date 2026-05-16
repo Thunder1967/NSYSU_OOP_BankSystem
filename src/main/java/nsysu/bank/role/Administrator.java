@@ -4,7 +4,6 @@ import nsysu.bank.account.BasicAccount;
 import nsysu.util.enumtype.RoleType;
 import nsysu.util.enumtype.StatusType;
 import nsysu.util.exception.IdNotFindException;
-import nsysu.util.exception.NegativeBalanceException;
 import nsysu.util.exception.SameUserNameException;
 import nsysu.util.exception.TargetNotFindException;
 import nsysu.util.sqlaccess.AccountData;

@@ -9,7 +9,6 @@ import nsysu.util.exception.TargetNotFindException;
 import nsysu.util.sqlaccess.UserData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class Person {
     private final String userId;

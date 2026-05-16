@@ -3,7 +3,6 @@ package nsysu.bank.account;
 import nsysu.util.enumtype.AccountType;
 import nsysu.util.enumtype.StatusType;
 import nsysu.util.exception.IdNotFindException;
-import nsysu.util.sqlaccess.AccountData;
 
 import java.time.Duration;
 import java.util.Date;
