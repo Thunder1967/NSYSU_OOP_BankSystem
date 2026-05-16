@@ -40,17 +40,21 @@ public class User extends Person{
 
     public boolean internalTransfer(int from,int to,double amount,String description)
             throws IndexOutOfBoundsException, NegativeBalanceException {
-        if(amount>0){
+        if(amount>0 && from!=to){
             String toId = this.account.get(to).getId();
-            return this.account.get(from).transfer(toId,amount,description);
+            boolean result = this.account.get(from).transfer(toId,amount,description);
+            this.account.get(to).refresh();
+            return result;
         }
         return false;
     }
 
     public boolean externalTransfer(int from,String toId,double amount,String description)
             throws IdNotFindException,NegativeBalanceException,IndexOutOfBoundsException{
-        if(this.account.get(from) instanceof ExternalTransferable fromAccount){
-            if(amount<=0 || this.account.stream().anyMatch(i->i.getId().equals(toId))){
+        if(this.account.get(from) instanceof ExternalTransferable fromAccount &&
+                BasicAccount.loadAccount(toId) instanceof ExternalTransferable){
+            if(amount<=0 || this.account.get(from).getId().equals(toId) ||
+                    this.account.stream().anyMatch(i->i.getId().equals(toId))){
                 return false;
             }
             else{
@@ -86,9 +90,9 @@ public class User extends Person{
         }
         return false;
     }
-    public void closeAccount(int from)
+    public boolean closeAccount(int from)
             throws IndexOutOfBoundsException{
-        this.account.get(from).closeAccount();
+        return this.account.get(from).closeAccount();
     }
     public List<HistoryRecord> getAccountHistory(int from)
             throws IndexOutOfBoundsException{

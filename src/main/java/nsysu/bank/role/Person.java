@@ -19,7 +19,7 @@ public abstract class Person {
     private String password;
     protected ArrayList<BasicAccount> account;
 
-    public Person(String userId,String role) throws IdNotFindException {
+    public Person(String userId,String role) throws IdNotFindException,ClosedUserException {
         this.userId = userId;
         this.name = UserData.getUserName(userId);
         this.role = role;
@@ -66,12 +66,12 @@ public abstract class Person {
         this.password = password;
     }
 
-    public final void refresh(){
+    public final void refresh() throws ClosedUserException{
         this.status = UserData.getStatue(userId);
         if(status.equals(StatusType.Closed.getStr())){
             throw new ClosedUserException();
         }
-        this.account = new ArrayList<BasicAccount>();
+        this.account = new ArrayList<>();
         for(String id:UserData.getAccount(userId)){
             this.account.add(BasicAccount.loadAccount(id));
         }

@@ -31,7 +31,7 @@ public class Administrator extends Person{
     public boolean giveMoney(String id,double value) throws IdNotFindException {
         if(value<0) return false;
         AccountData.incBalance(id,value);
-        AccountData.addOneHistory(id,value,"00000","Money from bank");
+        AccountData.addOneHistory(id,value,"Bank","Money from bank");
         return true;
     }
     public boolean unfreezeAccount(String id) throws IdNotFindException{

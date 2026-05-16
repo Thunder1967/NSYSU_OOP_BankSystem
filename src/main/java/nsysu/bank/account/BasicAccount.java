@@ -49,6 +49,7 @@ public abstract class BasicAccount {
     }
 
     public double getBalanceInNTD() {
+        if(checkStatusMatch(StatusType.Closed)) return 0;
         return balance;
     }
 
@@ -64,14 +65,18 @@ public abstract class BasicAccount {
         return history;
     }
 
-    public void addNewHistory(double amount,String anotherId,String description){
+    public boolean addNewHistory(double amount,String anotherId,String description){
+        if(checkStatusMatch(StatusType.Closed)) return false;
         AccountData.addOneHistory(this.accountId,amount,anotherId,description);
         this.history = AccountData.getHistory(this.getId());
+        return false;
     }
 
-    protected final void updateBalance(double increment) throws NegativeBalanceException {
+    protected final boolean updateBalance(double increment) throws NegativeBalanceException {
+        if(checkStatusMatch(StatusType.Closed)) return false;
         AccountData.incBalance(accountId,increment);
         this.balance = AccountData.getBalance(accountId);
+        return true;
     }
 
     public void refresh(){
@@ -94,13 +99,15 @@ public abstract class BasicAccount {
         }
     }
 
-    public void closeAccount(){
+    public boolean closeAccount(){
+        if(checkStatusMatch(StatusType.Closed)) return false;
         AccountData.setStatus(this.accountId,StatusType.Closed);
         refresh();
+        return true;
     }
 
     public boolean checkStatusMatch(StatusType... types){
-        return StatusType.checkMatch(this.type,types);
+        return StatusType.checkMatch(this.status,types);
     }
 
     @Override

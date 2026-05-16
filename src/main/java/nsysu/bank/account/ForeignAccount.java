@@ -26,7 +26,7 @@ public class ForeignAccount extends InterestAccount implements Transactable {
 
     @Override
     public double getBalanceInNTD() {
-        return this.getBalance()*USDtoNTD();
+        return super.getBalanceInNTD()*USDtoNTD();
     }
 
     @Override
