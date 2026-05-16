@@ -1,30 +1,26 @@
 package nsysu.bank.account;
 
 import nsysu.util.enumtype.AccountType;
+import nsysu.util.enumtype.StatusType;
 import nsysu.util.exception.NegativeBalanceException;
 import nsysu.util.sqlaccess.AccountData;
 
-public class CheckingAccount extends BasicAccount implements CanWithdraw,CanTransferOut{
+public class CheckingAccount extends BasicAccount implements Transactable, ExternalTransferable {
     protected CheckingAccount(String accountId) {
         super(accountId, AccountType.CheckingAccount.getStr());
     }
 
     @Override
-    public boolean transferOut(String toId, double amount, String description) {
+    public boolean externalTransfer(String toId, double amount, String description) {
         if(!isValidAmount(amount)){
             return false;
         }
-        try{
-            return transfer(toId,amount,description);
-        }
-        catch (NegativeBalanceException e){
-            return false;
-        }
+        return transfer(toId,amount,description);
     }
 
     @Override
     public boolean withdraw(double amount) {
-        if(!isValidAmount(amount) || !transferable(this.getId())){
+        if(!isValidAmount(amount) || !this.getType().equals(StatusType.Active.getStr())){
             return false;
         }
         try{
@@ -39,5 +35,10 @@ public class CheckingAccount extends BasicAccount implements CanWithdraw,CanTran
 
     private boolean isValidAmount(double amount) {
         return amount > 0;
+    }
+
+    @Override
+    public boolean deposit(double amount) {
+        return false;
     }
 }

@@ -47,10 +47,10 @@ public class HistoryRecord implements Comparable<HistoryRecord>{
     @Override
     public String toString() {
         if(amount>0){
-            return String.format("[%s] %d (from %s to %s) - %s", date, amount, anotherId, accountId, description);
+            return String.format("[%s] %.3f (from %s to %s) - %s", date, amount, anotherId, accountId, description);
         }
         else{
-            return String.format("[%s] %d (from %s to %s) - %s", date, amount, accountId, anotherId, description);
+            return String.format("[%s] %.3f (from %s to %s) - %s", date, amount, accountId, anotherId, description);
         }
     }
 }

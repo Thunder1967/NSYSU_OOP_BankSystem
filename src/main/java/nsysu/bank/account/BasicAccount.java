@@ -48,6 +48,11 @@ public abstract class BasicAccount {
         return balance;
     }
 
+    public double getBalanceInNTD() {
+        if(checkStatusMatch(StatusType.Closed)) return 0;
+        return balance;
+    }
+
     public String getType() {
         return type;
     }
@@ -60,25 +65,49 @@ public abstract class BasicAccount {
         return history;
     }
 
-    protected final void updateBalance(double increment) throws NegativeBalanceException {
+    public boolean addNewHistory(double amount,String anotherId,String description){
+        if(checkStatusMatch(StatusType.Closed)) return false;
+        AccountData.addOneHistory(this.accountId,amount,anotherId,description);
+        this.history = AccountData.getHistory(this.getId());
+        return false;
+    }
+
+    protected final boolean updateBalance(double increment) throws NegativeBalanceException {
+        if(checkStatusMatch(StatusType.Closed)) return false;
         AccountData.incBalance(accountId,increment);
         this.balance = AccountData.getBalance(accountId);
+        return true;
     }
+
     public void refresh(){
         this.balance = AccountData.getBalance(accountId);
         this.history = AccountData.getHistory(this.getId());
         this.status = AccountData.getStatus(this.getId());
     }
-    protected boolean transferable(String id) throws IdNotFindException{
-        return AccountData.getStatus(id).equals(StatusType.Active.getStr());
-    }
+
     public boolean transfer(String toId,double amount,String description) throws IdNotFindException,NegativeBalanceException{
-        if(!transferable(toId) || !transferable(accountId)) return false;
-        updateBalance(-amount);
-        AccountData.incBalance(toId,amount);
-        AccountData.addOneHistory(accountId,-amount,toId,description);
-        AccountData.addOneHistory(toId,amount,accountId,description);
+        if(checkStatusMatch(StatusType.Active) &&
+                StatusType.checkMatch(AccountData.getStatus(toId),StatusType.Active,StatusType.Frozen)){
+            updateBalance(-amount);
+            AccountData.incBalance(toId,amount);
+            addNewHistory(-amount,toId,description);
+            AccountData.addOneHistory(toId,amount,accountId,description);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean closeAccount(){
+        if(checkStatusMatch(StatusType.Closed)) return false;
+        AccountData.setStatus(this.accountId,StatusType.Closed);
+        refresh();
         return true;
+    }
+
+    public boolean checkStatusMatch(StatusType... types){
+        return StatusType.checkMatch(this.status,types);
     }
 
     @Override

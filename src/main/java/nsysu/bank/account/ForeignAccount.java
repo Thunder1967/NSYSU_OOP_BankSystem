@@ -1,14 +1,16 @@
 package nsysu.bank.account;
 
 import nsysu.util.enumtype.AccountType;
+import nsysu.util.enumtype.StatusType;
 import nsysu.util.exception.NegativeBalanceException;
 import nsysu.util.sqlaccess.AccountData;
 
 import java.time.Duration;
 import java.util.Date;
+import java.util.Random;
 
-public class ForeignAccount extends InterestAccount implements CanWithdraw{
-
+public class ForeignAccount extends InterestAccount implements Transactable {
+    static private final Random random = new Random();
     public ForeignAccount(String accountId, double rate) {
         super(accountId, AccountType.USDAccount.getStr(), rate);
         updateBalanceWithInterest();
@@ -16,6 +18,20 @@ public class ForeignAccount extends InterestAccount implements CanWithdraw{
 
     public ForeignAccount(String accountId){
         this(accountId,0.0001);
+    }
+
+    static public double USDtoNTD(){
+        return (random.nextDouble()-0.5)*10+30D;
+    }
+
+    @Override
+    public double getBalanceInNTD() {
+        return super.getBalanceInNTD()*USDtoNTD();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[%s] %s %s (%.3f USD)",this.getId(),this.getType(),status,balance);
     }
 
     @Override
@@ -26,7 +42,7 @@ public class ForeignAccount extends InterestAccount implements CanWithdraw{
 
     @Override
     public boolean withdraw(double amount) {
-        if(!isValidAmount(amount) || !transferable(this.getId())){
+        if(!isValidAmount(amount) || !this.getType().equals(StatusType.Active.getStr())){
             return false;
         }
         try{
@@ -41,5 +57,10 @@ public class ForeignAccount extends InterestAccount implements CanWithdraw{
 
     private boolean isValidAmount(double amount) {
         return amount > 0;
+    }
+
+    @Override
+    public boolean deposit(double amount) {
+        return false;
     }
 }
