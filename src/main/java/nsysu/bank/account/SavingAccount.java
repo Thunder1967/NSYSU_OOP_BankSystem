@@ -1,12 +1,14 @@
 package nsysu.bank.account;
 
 import nsysu.util.enumtype.AccountType;
+import nsysu.util.enumtype.StatusType;
 import nsysu.util.exception.IdNotFindException;
+import nsysu.util.sqlaccess.AccountData;
 
 import java.time.Duration;
 import java.util.Date;
 
-public class SavingAccount extends InterestAccount implements ExternalTransferable, Transactable, TransactableTool {
+public class SavingAccount extends InterestAccount implements ExternalTransferable, Transactable {
 
     public SavingAccount(String accountId, double rate) {
         super(accountId, AccountType.SavingsAccount.getStr(), rate);
@@ -34,8 +36,9 @@ public class SavingAccount extends InterestAccount implements ExternalTransferab
 
     @Override
     public boolean withdraw(double amount) throws NegativeArraySizeException{
-        if(amount>0 && transferable(this.getId())){
-            handleWithdraw(this.getId(),amount);
+        if(amount>0 && checkStatusMatch(StatusType.Active)){
+            this.updateBalance(-amount);
+            addNewHistory(amount,"","withdraw money");
             return true;
         }
         return false;
@@ -43,8 +46,9 @@ public class SavingAccount extends InterestAccount implements ExternalTransferab
 
     @Override
     public boolean deposit(double amount) {
-        if(amount>0 && transferable(this.getId())){
-            handleDeposit(this.getId(),amount);
+        if(amount>0 && checkStatusMatch(StatusType.Active,StatusType.Frozen)){
+            this.updateBalance(amount);
+            addNewHistory(amount,"","deposit money");
             return true;
         }
         return false;

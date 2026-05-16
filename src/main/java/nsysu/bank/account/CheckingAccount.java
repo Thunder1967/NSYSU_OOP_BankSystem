@@ -1,6 +1,7 @@
 package nsysu.bank.account;
 
 import nsysu.util.enumtype.AccountType;
+import nsysu.util.enumtype.StatusType;
 import nsysu.util.exception.NegativeBalanceException;
 import nsysu.util.sqlaccess.AccountData;
 
@@ -14,17 +15,12 @@ public class CheckingAccount extends BasicAccount implements Transactable, Exter
         if(!isValidAmount(amount)){
             return false;
         }
-        try{
-            return transfer(toId,amount,description);
-        }
-        catch (NegativeBalanceException e){
-            return false;
-        }
+        return transfer(toId,amount,description);
     }
 
     @Override
     public boolean withdraw(double amount) {
-        if(!isValidAmount(amount) || !transferable(this.getId())){
+        if(!isValidAmount(amount) || !this.getType().equals(StatusType.Active.getStr())){
             return false;
         }
         try{

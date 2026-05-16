@@ -1,6 +1,7 @@
 package nsysu.bank.account;
 
 import nsysu.util.enumtype.AccountType;
+import nsysu.util.enumtype.StatusType;
 import nsysu.util.exception.NegativeBalanceException;
 import nsysu.util.sqlaccess.AccountData;
 
@@ -41,7 +42,7 @@ public class ForeignAccount extends InterestAccount implements Transactable {
 
     @Override
     public boolean withdraw(double amount) {
-        if(!isValidAmount(amount) || !transferable(this.getId())){
+        if(!isValidAmount(amount) || !this.getType().equals(StatusType.Active.getStr())){
             return false;
         }
         try{

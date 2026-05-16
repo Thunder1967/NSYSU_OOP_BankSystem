@@ -1,5 +1,7 @@
 package nsysu.util.enumtype;
 
+import java.util.Arrays;
+
 public enum StatusType implements asTarget {
     Active("active"),
     Frozen("frozen"),
@@ -12,5 +14,11 @@ public enum StatusType implements asTarget {
     }
     public String getStr() {
         return str;
+    }
+    public static boolean checkMatch(String current, StatusType... targets) {
+        if (current == null || targets == null) return false;
+
+        return Arrays.stream(targets)
+                .anyMatch(target -> current.equals(target.getStr()));
     }
 }

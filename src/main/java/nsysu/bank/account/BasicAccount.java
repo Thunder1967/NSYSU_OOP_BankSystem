@@ -64,30 +64,43 @@ public abstract class BasicAccount {
         return history;
     }
 
+    public void addNewHistory(double amount,String anotherId,String description){
+        AccountData.addOneHistory(this.accountId,amount,anotherId,description);
+        this.history = AccountData.getHistory(this.getId());
+    }
+
     protected final void updateBalance(double increment) throws NegativeBalanceException {
         AccountData.incBalance(accountId,increment);
         this.balance = AccountData.getBalance(accountId);
     }
+
     public void refresh(){
         this.balance = AccountData.getBalance(accountId);
         this.history = AccountData.getHistory(this.getId());
         this.status = AccountData.getStatus(this.getId());
     }
-    protected boolean transferable(String id) throws IdNotFindException{
-        return AccountData.getStatus(id).equals(StatusType.Active.getStr());
-    }
+
     public boolean transfer(String toId,double amount,String description) throws IdNotFindException,NegativeBalanceException{
-        if(!transferable(accountId) || AccountData.getStatus(toId).equals(StatusType.Closed.getStr())) return false;
-        updateBalance(-amount);
-        AccountData.incBalance(toId,amount);
-        AccountData.addOneHistory(accountId,-amount,toId,description);
-        AccountData.addOneHistory(toId,amount,accountId,description);
-        return true;
+        if(checkStatusMatch(StatusType.Active) &&
+                StatusType.checkMatch(AccountData.getStatus(toId),StatusType.Active,StatusType.Frozen)){
+            updateBalance(-amount);
+            AccountData.incBalance(toId,amount);
+            addNewHistory(-amount,toId,description);
+            AccountData.addOneHistory(toId,amount,accountId,description);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public void closeAccount(){
         AccountData.setStatus(this.accountId,StatusType.Closed);
         refresh();
+    }
+
+    public boolean checkStatusMatch(StatusType... types){
+        return StatusType.checkMatch(this.type,types);
     }
 
     @Override
