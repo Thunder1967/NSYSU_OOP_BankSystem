@@ -1,0 +1,123 @@
+@startuml
+enum StatusType {
++  Active
++  Frozen
++  Closed
+- String str
++ String getStr()
++ {static} boolean checkMatch(String,StatusType)
+}
+
+
+class UserData {
++ {static} String getUserName(String)
++ {static} String getRole(String)
++ {static} List<String> getAccount(String)
++ {static} String getPassword(String)
++ {static} String getStatue(String)
++ {static} String addAccount(String,AccountType)
++ {static} void setPassword(String,String)
++ {static} void deactiveUser(String)
++ {static} void deleteUser(String)
++ {static} String addNewUser(String,String,RoleType)
++ {static} String getIdByName(String)
++ {static} void setStatue(String,StatusType)
+}
+
+class MongoDBUtil {
+- {static} MongoCollection<Document> accountsCollection
+- {static} MongoCollection<Document> usersCollection
+- {static} Random random
+- {static} MongoCollection<Document> getCollection(CollectionType)
++ {static} T getData(CollectionType,String,asTarget,Class<T>)
++ {static} void setData(CollectionType,String,asTarget,T)
++ {static} void updateData(CollectionType,String,asTarget,T)
++ {static} void addToList(CollectionType,String,asTarget,T)
+- {static} String genUniqueId(MongoCollection<Document>,String)
++ {static} String addNewUser(String,String,RoleType)
++ {static} boolean deleteData(CollectionType,String)
++ {static} String addNewAccount(String,AccountType)
++ {static} void addNewHistory(String,double,String,String)
++ {static} String getIdByName(String)
+}
+
+
+enum CollectionType {
++  USERS
++  ACCOUNTS
+}
+
+enum AccountType {
++  SavingsAccount
++  TimeDeposit
++  CheckingAccount
++  USDAccount
+- String str
++ String getStr()
+}
+
+
+class ClosedUserException {
+}
+interface asTarget {
+~ String getStr()
+}
+
+class NegativeBalanceException {
+}
+class IdNotFindException {
+}
+enum RoleType {
++  User
++  Administrator
+- String str
++ String getStr()
+}
+
+
+enum AccountTarget {
++  Balance
++  TimeOfLastView
++  Type
++  Status
++  History
+- String str
++ String getStr()
+}
+
+
+class AccountData {
++ {static} String getType(String)
++ {static} double getBalance(String)
++ {static} Date getLastView(String)
++ {static} List<HistoryRecord> getHistory(String)
++ {static} String getStatus(String)
++ {static} void incBalance(String,double)
++ {static} void setLastView(String)
++ {static} void addOneHistory(String,double,String,String)
++ {static} void setStatus(String,StatusType)
+}
+
+class TargetNotFindException {
+}
+class SameUserNameException {
+}
+enum UserTarget {
++  UserName
++  Password
++  Role
++  Status
++  Accounts
+- String str
++ String getStr()
+}
+
+
+
+
+RuntimeException <|-- ClosedUserException
+RuntimeException <|-- NegativeBalanceException
+RuntimeException <|-- IdNotFindException
+RuntimeException <|-- TargetNotFindException
+RuntimeException <|-- SameUserNameException
+@enduml

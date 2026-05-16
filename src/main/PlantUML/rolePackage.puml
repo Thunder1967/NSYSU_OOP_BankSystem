@@ -1,0 +1,44 @@
+@startuml
+abstract class Person {
+- String userId
+- String name
+- String role
+- String status
+- String password
+# ArrayList<BasicAccount> account
++ {static} Person logIn(String,String)
++ String getId()
++ String getName()
++ String getRole()
++ String getStatus()
++ String getPassword()
++ void setPassword(String)
++ void refresh()
+}
+
+
+class User {
++ String addAccount(AccountType)
++ ArrayList<BasicAccount> getAccount()
++ double queryTotalBalance()
++ boolean internalTransfer(int,int,double,String)
++ boolean externalTransfer(int,String,double,String)
++ boolean withdraw(int,double)
++ boolean deposit(int,double)
++ boolean closeAccount(int)
++ List<HistoryRecord> getAccountHistory(int)
+}
+
+class Administrator {
++ String addNewUser(String,String)
++ boolean deactivateUser(String)
++ boolean giveMoney(String,double)
++ boolean unfreezeAccount(String)
++ List<BasicAccount> getAccountByUserName(String)
+}
+
+
+
+Person <|-- User
+Person <|-- Administrator
+@enduml

@@ -1,6 +1,6 @@
 package nsysu.bank.account;
 
 public interface Transactable {
-    boolean withdraw(double amount);
-    boolean deposit(double amount);
+    public abstract boolean withdraw(double amount);
+    public abstract boolean deposit(double amount);
 }

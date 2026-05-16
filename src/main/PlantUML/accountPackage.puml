@@ -1,0 +1,85 @@
+@startuml
+interface ExternalTransferable {
++ {abstract}boolean externalTransfer(String,double,String)
+}
+
+abstract class InterestAccount {
+# Date date
+# double rate
++ double getRate()
+# void updateBalanceWithInterest()
++ void refresh()
+}
+
+
+abstract class BasicAccount {
+- String accountId
+- String type
+# double balance
+# String status
+# List<HistoryRecord> history
++ {static} BasicAccount loadAccount(String)
++ String getId()
++ double getBalance()
++ double getBalanceInNTD()
++ String getType()
++ String getStatus()
++ List<HistoryRecord> getHistory()
++ boolean addNewHistory(double,String,String)
+# boolean updateBalance(double)
++ void refresh()
++ boolean transfer(String,double,String)
++ boolean closeAccount()
++ boolean checkStatusMatch(StatusType)
++ String toString()
+}
+
+
+class ForeignAccount {
+- {static} Random random
++ {static} double USDtoNTD()
++ double getBalanceInNTD()
++ String toString()
+# void updateBalanceWithInterest()
++ boolean withdraw(double)
+- boolean isValidAmount(double)
++ boolean deposit(double)
+}
+
+
+class SavingAccount {
+# void updateBalanceWithInterest()
++ boolean externalTransfer(String,double,String)
++ boolean withdraw(double)
++ boolean deposit(double)
+}
+
+class CheckingAccount {
++ boolean externalTransfer(String,double,String)
++ boolean withdraw(double)
+- boolean isValidAmount(double)
++ boolean deposit(double)
+}
+
+class TimeDeposit {
+# void updateBalanceWithInterest()
+}
+
+interface Transactable {
++ {abstract}boolean withdraw(double)
++ {abstract}boolean deposit(double)
+}
+
+
+
+BasicAccount <|-- InterestAccount
+Transactable <|.. ForeignAccount
+InterestAccount <|-- ForeignAccount
+ExternalTransferable <|.. SavingAccount
+Transactable <|.. SavingAccount
+InterestAccount <|-- SavingAccount
+Transactable <|.. CheckingAccount
+ExternalTransferable <|.. CheckingAccount
+BasicAccount <|-- CheckingAccount
+InterestAccount <|-- TimeDeposit
+@enduml
