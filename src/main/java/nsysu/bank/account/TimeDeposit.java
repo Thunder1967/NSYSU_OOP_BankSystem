@@ -16,7 +16,8 @@ public class TimeDeposit extends InterestAccount {
 
     @Override
     protected final void updateBalanceWithInterest(){
-        Duration duration = Duration.between(new Date().toInstant(),this.date.toInstant());
+        Duration duration = Duration.between(this.date.toInstant(),new Date().toInstant()).abs();
         this.updateBalance(this.balance*this.rate*(duration.toHours()));
+        super.updateBalanceWithInterest();
     }
 }

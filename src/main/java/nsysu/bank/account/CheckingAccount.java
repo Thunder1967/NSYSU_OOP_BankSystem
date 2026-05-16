@@ -15,12 +15,17 @@ public class CheckingAccount extends BasicAccount implements Transactable, Exter
         if(!isValidAmount(amount)){
             return false;
         }
-        return transfer(toId,amount,description);
+        try{
+            return transfer(toId,amount,description);
+        }
+        catch (NegativeBalanceException e){
+            return false;
+        }
     }
 
     @Override
     public boolean withdraw(double amount) {
-        if(!isValidAmount(amount) || !this.getType().equals(StatusType.Active.getStr())){
+        if(!isValidAmount(amount) || !checkStatusMatch(StatusType.Active)){
             return false;
         }
         try{
@@ -39,6 +44,11 @@ public class CheckingAccount extends BasicAccount implements Transactable, Exter
 
     @Override
     public boolean deposit(double amount) {
-        return false;
+        if(!isValidAmount(amount) || !checkStatusMatch(StatusType.Active,StatusType.Frozen)){
+            return false;
+        }
+        updateBalance(amount);
+        addNewHistory(amount,"","deposit money to checking account");
+        return true;
     }
 }

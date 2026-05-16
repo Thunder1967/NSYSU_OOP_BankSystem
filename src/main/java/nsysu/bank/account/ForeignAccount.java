@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.Random;
 
 public class ForeignAccount extends InterestAccount implements Transactable {
-    static private final Random random = new Random();
     public ForeignAccount(String accountId, double rate) {
         super(accountId, AccountType.USDAccount.getStr(), rate);
         updateBalanceWithInterest();
@@ -21,7 +20,9 @@ public class ForeignAccount extends InterestAccount implements Transactable {
     }
 
     static public double USDtoNTD(){
-        return (random.nextDouble()-0.5)*10+30D;
+        long seed = System.currentTimeMillis();
+        Random random = new Random(seed);
+        return 30.0 + (random.nextDouble() - 0.5) * 10.0;
     }
 
     @Override
@@ -36,13 +37,14 @@ public class ForeignAccount extends InterestAccount implements Transactable {
 
     @Override
     protected final void updateBalanceWithInterest(){
-        Duration duration = Duration.between(this.date.toInstant(), new Date().toInstant());
+        Duration duration = Duration.between(this.date.toInstant(), new Date().toInstant()).abs();
         this.updateBalance(this.balance * this.rate * duration.toMinutes());
+        super.updateBalanceWithInterest();
     }
 
     @Override
     public boolean withdraw(double amount) {
-        if(!isValidAmount(amount) || !this.getType().equals(StatusType.Active.getStr())){
+        if(!isValidAmount(amount) || !checkStatusMatch(StatusType.Active)){
             return false;
         }
         try{
@@ -61,6 +63,11 @@ public class ForeignAccount extends InterestAccount implements Transactable {
 
     @Override
     public boolean deposit(double amount) {
-        return false;
+        if(!isValidAmount(amount) || !checkStatusMatch(StatusType.Active,StatusType.Frozen)){
+            return false;
+        }
+        updateBalance(amount);
+        addNewHistory(amount, "", "deposit money to foreign account");
+        return true;
     }
 }
