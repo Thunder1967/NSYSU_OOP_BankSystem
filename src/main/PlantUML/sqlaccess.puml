@@ -1,0 +1,29 @@
+@startuml
+class UserData {
++ {static} String getUserName(String)
++ {static} String getRole(String)
++ {static} List<String> getAccount(String)
++ {static} String getPassword(String)
++ {static} String getStatue(String)
++ {static} String addAccount(String,AccountType)
++ {static} void setPassword(String,String)
++ {static} void deactiveUser(String)
++ {static} void deleteUser(String)
++ {static} String addNewUser(String,String,RoleType)
++ {static} String getIdByName(String)
++ {static} void setStatue(String,StatusType)
+}
+
+class AccountData {
++ {static} String getType(String)
++ {static} double getBalance(String)
++ {static} Date getLastView(String)
++ {static} List<HistoryRecord> getHistory(String)
++ {static} String getStatus(String)
++ {static} void incBalance(String,double)
++ {static} void setLastView(String)
++ {static} void addOneHistory(String,double,String,String)
++ {static} void setStatus(String,StatusType)
+}
+
+@enduml

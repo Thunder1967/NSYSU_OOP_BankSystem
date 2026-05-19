@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class TimeDeposit extends InterestAccount {
     public TimeDeposit(String accountId) {
-        this(accountId,0.001);
+        this(accountId,0.01);
     }
     public TimeDeposit(String accountId, double rate) {
         super(accountId, AccountType.TimeDeposit.getStr(), rate);

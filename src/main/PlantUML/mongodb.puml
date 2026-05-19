@@ -1,0 +1,25 @@
+@startuml
+class MongoDBUtil {
+- {static} MongoCollection<Document> accountsCollection
+- {static} MongoCollection<Document> usersCollection
+- {static} Random random
+- {static} MongoCollection<Document> getCollection(CollectionType)
++ {static} T getData(CollectionType,String,asTarget,Class<T>)
++ {static} void setData(CollectionType,String,asTarget,T)
++ {static} void updateData(CollectionType,String,asTarget,T)
++ {static} void addToList(CollectionType,String,asTarget,T)
+- {static} String genUniqueId(MongoCollection<Document>,String)
++ {static} String addNewUser(String,String,RoleType)
++ {static} boolean deleteData(CollectionType,String)
++ {static} String addNewAccount(String,AccountType)
++ {static} void addNewHistory(String,double,String,String)
++ {static} String getIdByName(String)
+}
+
+
+enum CollectionType {
++  USERS
++  ACCOUNTS
+}
+
+@enduml

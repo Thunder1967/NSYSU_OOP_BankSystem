@@ -1,5 +1,5 @@
 @startuml
-enum StatusType {
+enum nsysu.util.enumtype.StatusType {
 +  Active
 +  Frozen
 +  Closed
@@ -9,7 +9,7 @@ enum StatusType {
 }
 
 
-class UserData {
+class nsysu.util.sqlaccess.UserData {
 + {static} String getUserName(String)
 + {static} String getRole(String)
 + {static} List<String> getAccount(String)
@@ -24,7 +24,7 @@ class UserData {
 + {static} void setStatue(String,StatusType)
 }
 
-class MongoDBUtil {
+class nsysu.util.mongodb.MongoDBUtil {
 - {static} MongoCollection<Document> accountsCollection
 - {static} MongoCollection<Document> usersCollection
 - {static} Random random
@@ -42,12 +42,12 @@ class MongoDBUtil {
 }
 
 
-enum CollectionType {
+enum nsysu.util.mongodb.CollectionType {
 +  USERS
 +  ACCOUNTS
 }
 
-enum AccountType {
+enum nsysu.util.enumtype.AccountType {
 +  SavingsAccount
 +  TimeDeposit
 +  CheckingAccount
@@ -57,17 +57,17 @@ enum AccountType {
 }
 
 
-class ClosedUserException {
+class nsysu.util.exception.ClosedUserException {
 }
-interface asTarget {
+interface nsysu.util.enumtype.asTarget {
 ~ String getStr()
 }
 
-class NegativeBalanceException {
+class nsysu.util.exception.NegativeBalanceException {
 }
-class IdNotFindException {
+class nsysu.util.exception.IdNotFindException {
 }
-enum RoleType {
+enum nsysu.util.enumtype.RoleType {
 +  User
 +  Administrator
 - String str
@@ -75,7 +75,7 @@ enum RoleType {
 }
 
 
-enum AccountTarget {
+enum nsysu.util.enumtype.AccountTarget {
 +  Balance
 +  TimeOfLastView
 +  Type
@@ -86,7 +86,7 @@ enum AccountTarget {
 }
 
 
-class AccountData {
+class nsysu.util.sqlaccess.AccountData {
 + {static} String getType(String)
 + {static} double getBalance(String)
 + {static} Date getLastView(String)
@@ -98,11 +98,11 @@ class AccountData {
 + {static} void setStatus(String,StatusType)
 }
 
-class TargetNotFindException {
+class nsysu.util.exception.TargetNotFindException {
 }
-class SameUserNameException {
+class nsysu.util.exception.SameUserNameException {
 }
-enum UserTarget {
+enum nsysu.util.enumtype.UserTarget {
 +  UserName
 +  Password
 +  Role
@@ -115,9 +115,9 @@ enum UserTarget {
 
 
 
-RuntimeException <|-- ClosedUserException
-RuntimeException <|-- NegativeBalanceException
-RuntimeException <|-- IdNotFindException
-RuntimeException <|-- TargetNotFindException
-RuntimeException <|-- SameUserNameException
+nsysu.util.exception.RuntimeException <|-- nsysu.util.exception.ClosedUserException
+nsysu.util.exception.RuntimeException <|-- nsysu.util.exception.NegativeBalanceException
+nsysu.util.exception.RuntimeException <|-- nsysu.util.exception.IdNotFindException
+nsysu.util.exception.RuntimeException <|-- nsysu.util.exception.TargetNotFindException
+nsysu.util.exception.RuntimeException <|-- nsysu.util.exception.SameUserNameException
 @enduml

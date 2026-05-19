@@ -2,7 +2,6 @@ package nsysu.bank.account;
 
 import nsysu.util.enumtype.AccountType;
 import nsysu.util.enumtype.StatusType;
-import nsysu.util.exception.NegativeBalanceException;
 import nsysu.util.sqlaccess.AccountData;
 
 import java.time.Duration;
@@ -10,6 +9,7 @@ import java.util.Date;
 import java.util.Random;
 
 public class ForeignAccount extends InterestAccount implements Transactable {
+    private static final Random RANDOM = new Random();
     public ForeignAccount(String accountId, double rate) {
         super(accountId, AccountType.USDAccount.getStr(), rate);
         updateBalanceWithInterest();
@@ -20,9 +20,8 @@ public class ForeignAccount extends InterestAccount implements Transactable {
     }
 
     static public double USDtoNTD(){
-        long seed = System.currentTimeMillis();
-        Random random = new Random(seed);
-        return 30.0 + (random.nextDouble() - 0.5) * 10.0;
+        RANDOM.setSeed(System.currentTimeMillis()/3600_000);
+        return 30.0 + (RANDOM.nextDouble() - 0.5) * 10.0;
     }
 
     @Override
@@ -47,13 +46,8 @@ public class ForeignAccount extends InterestAccount implements Transactable {
         if(!isValidAmount(amount) || !checkStatusMatch(StatusType.Active)){
             return false;
         }
-        try{
-            updateBalance(-amount);
-            AccountData.addOneHistory(this.getId(), -amount, "", "withdraw money from foreign account");
-        }
-        catch (NegativeBalanceException e){
-            return false;
-        }
+        updateBalance(-amount);
+        AccountData.addOneHistory(this.getId(), -amount, "", "withdraw money from foreign account");
         return true;
     }
 
